@@ -50,28 +50,9 @@ class Birdfeeder:
 
         if foodinfeeder is None:
             _ = self.countinfeeder()
-            # foodinfeeder = {"Seed":0, "Invertebrate":0, "Fish":0, "Fruit":0, "Rodent":0, "Seed or Invertebrate":0}
-            # # foodinfeeder = [0, 0, 0, 0, 0, 0]
-            # # for i in range(len(dice)):
-            # #     if self.dice[i].infeeder is True:
-            # #         if self.dice[i].sideup == "Seed":
-            # #             foodinfeeder[0] += 1
-            # #         elif self.dice[i].sideup == "Invertebrate":
-            # #             foodinfeeder[1] += 1
-            # #         elif self.dice[i].sideup == "Fish":
-            # #             foodinfeeder[2] += 1
-            # #         elif self.dice[i].sideup == "Fruit":
-            # #             foodinfeeder[3] += 1
-            # #         elif self.dice[i].sideup == "Rodent":
-            # #             foodinfeeder[4] += 1
-            # #         elif self.dice[i].sideup == "Seed or Invertebrate":
-            # #             foodinfeeder[5] += 1
-            # #         else:
-            # #             print("There's a problem with the code")
-            # for i in range(len(dice)):
-            #     if self.dice[i].infeeder is True:
-            #         foodinfeeder[self.dice[i].sideup] += 1
-            #         self.foodinfeeder = foodinfeeder
+            
+        if foodoutfeeder is None:
+            _ = self.countoutfeeder()
 
     def countinfeeder(self):
         # Count the current food in the feeder (can be immediately after a roll
@@ -81,22 +62,7 @@ class Birdfeeder:
         for i in range(len(self.dice)):
             if self.dice[i].infeeder is True:
                 foodinfeeder[self.dice[i].sideup] += 1
-        # for i in range(len(self.dice)):
-        #     if self.dice[i].infeeder is True:
-        #         if self.dice[i].sideup == "Seed":
-        #             foodinfeeder[0] += 1
-        #         elif self.dice[i].sideup == "Invertebrate":
-        #             foodinfeeder[1] += 1
-        #         elif self.dice[i].sideup == "Fish":
-        #             foodinfeeder[2] += 1
-        #         elif self.dice[i].sideup == "Fruit":
-        #             foodinfeeder[3] += 1
-        #         elif self.dice[i].sideup == "Rodent":
-        #             foodinfeeder[4] += 1
-        #         elif self.dice[i].sideup == "Seed or Invertebrate":
-        #             foodinfeeder[5] += 1
-        #         else:
-        #             print("There's a problem with the code")
+
         self.foodinfeeder = foodinfeeder
 
         return foodinfeeder
@@ -109,23 +75,6 @@ class Birdfeeder:
         for i in range(len(self.dice)):
             if self.dice[i].infeeder is False:
                 foodoutfeeder[self.dice[i].sideup] += 1
-
-        # for i in range(len(self.dice)):
-        #     if self.dice[i].infeeder is False:
-        #         if self.dice[i].sideup == "Seed":
-        #             foodoutfeeder[0] += 1
-        #         elif self.dice[i].sideup == "Invertebrate":
-        #             foodoutfeeder[1] += 1
-        #         elif self.dice[i].sideup == "Fish":
-        #             foodoutfeeder[2] += 1
-        #         elif self.dice[i].sideup == "Fruit":
-        #             foodoutfeeder[3] += 1
-        #         elif self.dice[i].sideup == "Rodent":
-        #             foodoutfeeder[4] += 1
-        #         elif self.dice[i].sideup == "Seed or Invertebrate":
-        #             foodoutfeeder[5] += 1
-        #         else:
-        #             print("There's a problem with the code")
         
         self.foodoutfeeder = foodoutfeeder
 
@@ -148,8 +97,29 @@ class Birdfeeder:
                 foodoutfeeder = self.countoutfeeder()
 
         return foodoutfeeder
+    
+    def print_current_dice(self):
+        # Print all the dice in the feeder and then all the dice out of the feeder
+        print("Dice currently in the feeder:")
+        print(self.foodinfeeder)
+        print("\nDice currently out of the feeder:")
+        print(self.foodoutfeeder)
 
 ##################### BUILDING UP PLAYER BOARD FROM THE GROUND UP ##############
 # How to best build the player board? Should there be a class for a card space
 # that would contain the default action, the environment, the cost, etc.? Or
 # should that be coded directly into a larger player board class?
+
+
+class BirdCard:
+    def __init__(self,name,pts,category,habitats):
+        self.name = name
+        self.pts = pts
+        self.category = category
+        self.habitats = habitats
+
+
+
+if __name__ == "__main__":
+    feeder = Birdfeeder()
+    feeder.print_current_dice()
