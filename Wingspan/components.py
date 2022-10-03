@@ -112,14 +112,52 @@ class Birdfeeder:
 
 
 class BirdCard:
-    def __init__(self,name,pts,category,habitats):
+    def __init__(self,name,color,pts,category,habitats):
         self.name = name
+        self.color = color
         self.pts = pts
         self.category = category
         self.habitats = habitats
 
 
+##### Other functions #####
+def prep_card_data(df):
+    # Get rid of rows with nan common name
+    df = df[df["Common name"].notna()]
+    
+    df = df.drop(columns=["* (food cost)"], axis=1)
+    
+    bonus_columns = []
+    
+    boolean_fix_columns = ["Predator", "Flocking", "Bonus card", "Forest",
+                           "Grassland", "Wetland", "Straight points power",
+                           "Non-environment power", "Power outside env"]
+    # Replace 1s and 0s in appropriate columns with True/False
+    for boolean_str in boolean_fix_columns:
+        df[boolean_str].loc[df[boolean_str] == 0] = False
+        df[boolean_str].loc[df[boolean_str] == 1] = True
+    
+    for i in range(len(df)):
+        if np.isnan(df.loc[i,"/ (food cost)"]):
+            df.loc[i,"/ (food cost)"] = 0
+            
+    for bonus_str in bonus_columns:
+        for i in range(len(df)):
+            if np.isnan(df.loc[i,bonus_str]) or df.loc[i,bonus_str] == 0:
+                df.loc[i,bonus_str] = False
+            else:
+                df.loc[i,bonus_str] = True
+                
+    return df
+
 
 if __name__ == "__main__":
+    #load bird card data
+    cards_df = pd.read_csv('wingspan-card-lists-Core.csv')
+    
+    cards_df = prep_card_data(cards_df)
+    # clean cards_df
+    
+    
     feeder = Birdfeeder()
     feeder.print_current_dice()
