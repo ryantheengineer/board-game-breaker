@@ -111,6 +111,8 @@ class Birdfeeder:
 # should that be coded directly into a larger player board class?
 
 
+# Bird cards might work better as dictionaries. They probably don't need their
+# own internal functions
 class BirdCard:
     def __init__(self,cards_df_row):
         self.common_name = cards_df_row["Common name"]
