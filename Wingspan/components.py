@@ -112,12 +112,28 @@ class Birdfeeder:
 
 
 class BirdCard:
-    def __init__(self,name,color,pts,category,habitats):
-        self.name = name
-        self.color = color
-        self.pts = pts
-        self.category = category
-        self.habitats = habitats
+    def __init__(self,cards_df_row):
+        self.common_name = cards_df_row["Common name"]
+        self.scientific_name = cards_df_row["Scientific name"]
+        self.color = cards_df_row["Color"]
+        self.powercategory = cards_df_row["PowerCategory"]
+        self.powertext = cards_df_row["Power text"]
+        self.predator = cards_df_row["Predator"]
+        self.flocking = cards_df_row["Flocking"]
+        
+class BirdCardTray:
+    def __init__(self, cards_df):
+        self.cards_df = cards_df
+        self.deck = self.initialize_deck()
+        
+    def initialize_deck(self):
+        # Create the basic list of cards, shuffle, and place cards in tray slots
+        deck = [BirdCard(self.cards_df.loc[row]) for row in range(len(cards_df))]
+        # shuffle the deck
+        
+        # draw 3 cards and fill tray
+        
+        return deck
 
 
 ##### Other functions #####
@@ -127,7 +143,8 @@ def prep_card_data(df):
     
     df = df.drop(columns=["* (food cost)"], axis=1)
     
-    bonus_columns = []
+    bonus_columns = list(df.columns)
+    del bonus_columns[0:27]
     
     boolean_fix_columns = ["Predator", "Flocking", "Bonus card", "Forest",
                            "Grassland", "Wetland", "Straight points power",
@@ -161,3 +178,5 @@ if __name__ == "__main__":
     
     feeder = Birdfeeder()
     feeder.print_current_dice()
+    
+    cardtray = BirdCardTray(cards_df)
