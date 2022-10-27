@@ -126,16 +126,39 @@ class BirdCard:
 class BirdCardTray:
     def __init__(self, cards_df):
         self.cards_df = cards_df
-        self.deck = self.initialize_deck()
+        self.deck, self.tray = self.initialize_deck()
         
     def initialize_deck(self):
         # Create the basic list of cards, shuffle, and place cards in tray slots
         deck = [BirdCard(self.cards_df.loc[row]) for row in range(len(cards_df))]
         # shuffle the deck
+        random.shuffle(deck)
         
         # draw 3 cards and fill tray
+        tray = [deck.pop(0) for _ in range(3)]
         
-        return deck
+        return deck, tray
+    
+    def refill_tray(self):
+        # If the tray length is not 3, then refill
+        deficit = 3 - len(self.tray)
+        if deficit > 0:
+            for i in range(deficit):
+                self.tray.append(self.deck.pop(0))
+                
+    def draw_from_deck(self):
+        card_drawn = self.deck.pop(0)
+        return card_drawn
+    
+    def draw_from_tray(self,ind):
+        card_drawn = self.tray.pop(ind)
+        self.refill_tray()
+        return card_drawn
+    
+    def print_tray(self):
+        print("Tray:")
+        for card in self.tray:
+            print(card.common_name)
 
 
 ##### Other functions #####
